@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura Auto Sv Pro💋✨</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:#1a0a1a;color:white;min-height:100vh;padding:20px}
+  .container{max-width:400px;margin:0 auto}
+  .header{text-align:center;padding:20px 0}
+  .header h1{font-size:28px;background:linear-gradient(45deg,#ff5fa2,#c86bff,#ff9a5a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .header p{color:#ffb3d9;font-size:13px;margin-top:5px}
+  .card{background:#2a122a;border:1px solid #ff5fa2;border-radius:20px;padding:20px;margin-top:15px;box-shadow:0 0 20px #ff5fa233}
+  label{font-size:13px;color:#ffc2dd}
+  input{width:100%;padding:14px;margin-top:8px;border-radius:12px;border:1px solid #ff5fa2;background:#1a0a1a;color:white;font-size:16px;outline:none}
+  input:focus{border-color:#c86bff;box-shadow:0 0 10px #c86bff55}
+  .switch-row{display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+  .switch{position:relative;width:60px;height:30px;background:#444;border-radius:30px;cursor:pointer;transition:.3s}
+  .switch.on{background:#ff5fa2}
+  .switch::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;background:white;border-radius:50%;transition:.3s}
+  .switch.on::after{left:33px}
+  .btn{width:100%;padding:15px;border:none;border-radius:15px;background:linear-gradient(45deg,#ff5fa2,#c86bff);color:white;font-size:16px;font-weight:bold;margin-top:20px;cursor:pointer}
+  .btn:active{transform:scale(.97)}
+  .test-btn{background:#333;border:1px solid #555;margin-top:10px}
+  .list{margin-top:15px}
+  .item{background:#1a0a1a;border:1px solid #333;padding:12px;border-radius:12px;display:flex;justify-content:space-between;margin-bottom:10px}
+  .item b{color:#ffb3d9}
+  .item span{font-size:12px;color:#aaa}
+  .badge{background:#ff5fa2;color:white;padding:2px 8px;border-radius:20px;font-size:11px}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#ff5fa2;padding:12px 20px;border-radius:30px;font-weight:bold;display:none;z-index:99}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Aura Auto Sv Pro💋✨</h1>
+    <p>Unknown WP Number Auto Save</p>
+  </div>
+
+  <div class="card">
+    <label>✨ එකම නම දාන්න - ඔක්කොම මේ නමින් Save වෙනවා</label>
+    <input id="baseName" type="text" placeholder="Ex: Aura" value="Aura">
+    
+    <div class="switch-row">
+      <span>Auto Save ON / OFF</span>
+      <div id="switch" class="switch on" onclick="toggleSwitch()"></div>
+    </div>
+    <p id="status" style="font-size:12px;color:#7CFC00;margin-top:10px">● Auto Save ON - Ready</p>
+
+    <button class="btn" onclick="saveName()">💾 නම Save කරලා ON කරන්න</button>
+    <button class="btn test-btn" onclick="simulateMsg()">🧪 Test Msg එකක් එවන්න (Demo)</button>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between"><b>Saved Numbers 💋</b><span class="badge" id="countBadge">0 Saved</span></div>
+    <div class="list" id="list">
+      <p style="color:#888;font-size:13px;text-align:center;margin-top:10px">තවම කිසිම Number එකක් Save වෙලා නෑ...</p>
+    </div>
+    <button class="btn test-btn" onclick="clearAll()">🗑️ ඔක්කොම Clear කරන්න</button>
+  </div>
+  <p style="text-align:center;font-size:11px;color:#666;margin-top:15px">Made for Aura 💋✨ | HTML Demo Version</p>
+</div>
+
+<div class="toast" id="toast">Saved 💋</div>
+
+<script>
+let isOn = true;
+let count = parseInt(localStorage.getItem('aura_count') || '1');
+let savedList = JSON.parse(localStorage.getItem('aura_list') || '[]');
+let baseName = localStorage.getItem('aura_name') || 'Aura';
+document.getElementById('baseName').value = baseName;
+renderList();
+
+function toggleSwitch(){
+  isOn = !isOn;
+  document.getElementById('switch').classList.toggle('on', isOn);
+  document.getElementById('status').innerHTML = isOn ? '● Auto Save ON - Ready' : '○ Auto Save OFF';
+  document.getElementById('status').style.color = isOn ? '#7CFC00' : '#ff5555';
+}
+function saveName(){
+  baseName = document.getElementById('baseName').value.trim() || 'Aura';
+  localStorage.setItem('aura_name', baseName);
+  showToast(baseName + ' නම Save උනා 💋');
+}
+function saveNumber(number){
+  if(!isOn) return;
+  let finalName = baseName + ' ' + String(count).padStart(2,'0');
+  savedList.unshift({name: finalName, number: number, time: new Date().toLocaleTimeString()});
+  localStorage.setItem('aura_list', JSON.stringify(savedList));
+  localStorage.setItem('aura_count', count+1);
+  count++;
+  renderList();
+  showToast(finalName + ' Saved 💋✨');
+}
+function simulateMsg(){
+  // Demo එකට Random Number එකක් හදනවා
+  let fakeNumbers = ['+94771234567','+94762349871','+94709876543','+94715556677'];
+  let num = fakeNumbers[Math.floor(Math.random()*fakeNumbers.length)];
+  saveNumber(num);
+}
+function renderList(){
+  let listEl = document.getElementById('list');
+  document.getElementById('countBadge').innerText = savedList.length + ' Saved';
+  if(savedList.length===0){ listEl.innerHTML = '<p style="color:#888;font-size:13px;text-align:center;margin-top:10px">තවම කිසිම Number එකක් Save වෙලා නෑ...</p>'; return; }
+  listEl.innerHTML = savedList.map(i=>`<div class="item"><div><b>${i.name}</b><br><span>${i.number} • ${i.time}</span></div><span>💋</span></div>`).join('');
+}
+function clearAll(){
+  savedList=[]; count=1; localStorage.clear(); renderList(); showToast('Clear උනා');
+}
+function showToast(msg){
+  let t=document.getElementById('toast'); t.innerText=msg; t.style.display='block';
+  setTimeout(()=>t.style.display='none',2000);
+}
+// Real Android එකේදී මෙතන තමයි Notification Listener එක එන්නේ
+// NotificationListenerService එකෙන් WP Notification එක අල්ලලා saveNumber(number) කියලා Call කරනවා
+</script>
+</body>
+</html>
